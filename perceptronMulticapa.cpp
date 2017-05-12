@@ -18,7 +18,6 @@ float peso2[NEU_OCULTAS][NEU_SALIDA]; //pesos entre neuronas ocultas y de salida
 float biasOculto[NEU_OCULTAS];
 float biasSalida[NEU_SALIDA];
 float oculto[NEU_OCULTAS];
-float salida[NEU_SALIDA];
 
 void imprimeSalida(float* sal){
 	for(int i = 0; i<NEU_SALIDA; i++){
@@ -46,10 +45,10 @@ void initPesos(){
 void initBias(){
 	int i;
 	for(i = 0; i<NEU_OCULTAS; i++){
-		biasOculto[i] = 1.0;
+		biasOculto[i] = 1.0f;
 	}
 	for(i = 0; i<NEU_SALIDA; i++){
-		biasSalida[i] = 1.0;
+		biasSalida[i] = 1.0f;
 	}
 }
 
@@ -58,6 +57,7 @@ float sigmoide( float s ){
 }
 
 float* run( float* entrada ){
+	float* salida = new float[NEU_SALIDA];
 	int i, j;
 
 	for(i=0;i<NEU_OCULTAS;i++){
@@ -69,7 +69,7 @@ float* run( float* entrada ){
 
 	for(i = 0; i<NEU_ENTRADA; i++){
 		for(j = 0; j<NEU_OCULTAS; j++){
-			oculto[j]=entrada[i]*peso1[i][j];
+			oculto[j]+=entrada[i]*peso1[i][j];
 		}
 	}
 	for(j = 0; j<NEU_OCULTAS; j++){
@@ -79,7 +79,7 @@ float* run( float* entrada ){
 	
 	for(i = 0; i<NEU_OCULTAS; i++){
 		for(j = 0; j<NEU_SALIDA; j++){
-			salida[j]=oculto[i]*peso2[i][j];
+			salida[j]+=oculto[i]*peso2[i][j];
 		}
 	}
 	for(j = 0; j<NEU_SALIDA; j++){
@@ -156,22 +156,22 @@ int main(){
 		entrenaRed(c,sc);
 		entrenaRed(d,sd);
 	}
-	float* sal;	
-	sal = run(a);
+	float* salida;	
+	salida = run(a);
 	cout << "0,0" << endl;
-	imprimeSalida(sal);
+	imprimeSalida(salida);
 	
-	sal = run(b);
+	salida = run(b);
 	cout << "0,1" << endl;
-	imprimeSalida(sal);
+	imprimeSalida(salida);
 	
-	sal = run(c);
+	salida = run(c);
 	cout << "1,0" << endl;
-	imprimeSalida(sal);
+	imprimeSalida(salida);
 	
-	sal = run(d);
+	salida = run(d);
 	cout << "1,1" << endl;
-	imprimeSalida(sal);
+	imprimeSalida(salida);
 }
 
 
